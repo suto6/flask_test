@@ -1,10 +1,43 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, render_template, redirect, url_for
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 @app.route('/')
 def index():
-    return "<h1>Hello, World!</h1>",
+    myvalue = "askmyevent"
+    myresult = 10+20
+    mylist = [12,33,65,76]
+    return render_template('index.html', value=myvalue, result=myresult, list=mylist)
+
+@app.route('/other')
+def other():
+    return render_template('otherpage.html')
+
+@app.route('/filter')
+def filter():
+    some_text = 'Hello from filter\n'
+    return render_template('filter.html', text = some_text)
+
+@app.template_filter('reverse')
+def reverse_string(s):
+    return s[::-1] # for reverse
+
+@app.template_filter('repeat')
+def repeat(s, times=2):
+    return s * times # for repeat
+
+@app.template_filter('alternate_case')
+def alternate_case(s):
+    return ''.join([c.upper() if i % 2 == 0 else c.lower() for i, c in enumerate(s)])
+
+@app.route('/hdjhcidsjhci')
+def otherSome():
+    return "otherSome!"
+
+@app.route('/redirect_endpoint')
+def redirect_endpoint():
+    return redirect(url_for('other')) #by function name
+
 
 @app.route('/hello', methods=['GET', 'POST'])
 def hello():
@@ -45,6 +78,7 @@ def handle_url_params():
     greeting = request.args.get('greeting')
     name = request.args.get('name')
     return f'<h1>{greeting}, {name}!</h1>'
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)

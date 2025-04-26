@@ -1,0 +1,21 @@
+
+{% extends "base.html" %}
+{% block title %} Index Page {% endblock %}
+{% block content %}
+    <div class="box">
+        <h1>Hello from Flask!</h1>
+        <p>{{ value }}</p>
+        <p>{{ result }}</p>
+        <ul>
+            {% for i in list %}
+            {% if i==33 %}
+                <li style="color: red;">{{ i }}</li>
+                {% else %}
+                <li>{{ i }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <a href="{{url_for('otherSome')}}">Other Some</a>
+   {% endblock %} 
+

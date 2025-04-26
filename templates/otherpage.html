@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Other Page{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the Other Page</h1>
+    <p>This is another page in your Flask app using template inheritance.</p>
+
+    <div class="card">
+        <h2>Card Title</h2>
+        <p>This is some example content inside a styled card box.</p>
+        <a href="/" class="btn">Go back to Home</a>
+    </div>
+
+    <style>
+        .card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #f9f9f9;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+{% endblock %}
