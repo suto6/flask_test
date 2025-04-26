@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Form{% endblock %}
+{% block content %}
+
+<style>
+    form {
+        width: 300px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    input[type="text"],
+    input[type="password"] {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    input[type="submit"] {
+        width: 95%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<h1>FORM</h1>
+<form method="POST" action="{{ url_for('form') }}">
+    <input type="text" name="name" placeholder="Enter your name">
+    <input type="password" name="password" placeholder="Enter your password">
+    <input type="submit" value="Login">
+</form>
+
+<h1>File Upload</h1>
+<form method="POST" action="{{ url_for('file_upload') }}" enctype="multipart/form-data">
+    <input type="file" name="file" accept="application/pdf, text/plain"> <br><br>
+    <input type="submit" value="Upload">
+</form>
+
+<h1>Convert CSV Two</h1>
+<form method="POST" action="{{ url_for('convert_csv_two') }}" enctype="multipart/form-data">
+    <input type="file" name="file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required="required"><br>
+    <input type="submit" value="Upload File">
+</form>
+{% endblock %}

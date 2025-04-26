@@ -1,4 +1,8 @@
-from flask import Flask, request, make_response, render_template, redirect, url_for
+from flask import Flask, request, make_response, render_template, redirect, url_for, send_from_directory, jsonify
+import fitz
+import pandas as pd
+import os
+import uuid
 
 app = Flask(__name__, template_folder='templates')
 
@@ -8,6 +12,85 @@ def index():
     myresult = 10+20
     mylist = [12,33,65,76]
     return render_template('index.html', value=myvalue, result=myresult, list=mylist)
+
+@app.route('/form', methods=['GET', 'POST'])
+def form():
+    if request.method == 'GET':
+        return render_template('form.html')
+    elif request.method == 'POST':
+        name = request.form['name']
+        password = request.form['password']
+
+        if name == "sutapa" and password == "1234":
+            return "Welcome, sutapa"
+        else:
+            return "Invalid credentials" 
+
+
+@app.route('/convert_csv')
+def convert_csv():
+    file = request.files['file']
+    if not file:
+        return "No file uploaded", 400
+
+    if file.content_type == 'text/csv':
+        content = file.read().decode('utf-8')
+        return f"<h3>CSV File Content:</h3><pre>{content}</pre>"
+
+    else:
+        return "Unsupported file type", 400
+
+@app.route('/file_upload', methods=['POST'])
+def file_upload():
+    file = request.files['file']
+
+    if not file:
+        return "No file uploaded", 400
+
+    if file.content_type == 'text/plain':
+        content = file.read().decode('utf-8')
+        return f"<h3>Text File Content:</h3><pre>{content}</pre>"
+
+    elif file.content_type == 'application/pdf':
+        content = file.read()
+        pdf_document = fitz.open(stream=content, filetype="pdf")
+        text = ""
+        for page in pdf_document:
+            text += page.get_text()
+        pdf_document.close()
+
+        return f"<h3>PDF File Content:</h3><pre>{text}</pre>"
+
+    else:
+        return "Unsupported file type", 400
+    
+@app.route('/convert_csv_two', methods=['POST'])
+def convert_csv_two():
+    file = request.files['file']
+
+    df = pd.read_excel(file)
+
+    if not os.path.exists('downloads'):
+        os.makedirs('downloads')
+
+    filename = f'{uuid.uuid4()}.csv'
+    df.to_csv(os.path.join('downloads', filename), index=False)
+
+    return render_template('download.html', filename=filename)
+
+@app.route('/download/<filename>')
+def download(filename):
+    return send_from_directory('downloads', filename, download_name='result.csv')
+
+@app.route('/handle_post', methods=['POST'])
+def handle_post():
+    greeting = request.json['greeting']
+    name = request.json['name']
+
+    with open('greeting.txt', 'w') as f:
+        f.write(f'{greeting}, {name}')
+
+    return jsonify({'message': 'Greeting received'})
 
 @app.route('/other')
 def other():

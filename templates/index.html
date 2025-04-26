@@ -17,5 +17,30 @@
         </ul>
     </div>
     <a href="{{url_for('otherSome')}}">Other Some</a>
+
+    <h1>
+        JavaScript JSON Request
+    </h1>
+    <button id="post_btn">Sent Post Req</button>
+
+    <script type="text/javascript">
+        const postBtn = document.getElementById('post_btn');
+        const jsonData = {name: 'Sutooo', greeting: 'Hello'};
+
+        postBtn.addEventListener('click', function () {
+            fetch('{{ url_for("handle_post") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify(jsonData)
+            })
+                .then(response => response.json())
+                .then(data => console.log('success:' ,data))
+                .catch(error => {
+                    console.log('error:', error)
+                });
+        });
+    </script>
    {% endblock %} 
 
