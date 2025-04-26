@@ -4,7 +4,7 @@ import pandas as pd
 import os
 import uuid
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path="/")
 
 @app.route('/')
 def index():
