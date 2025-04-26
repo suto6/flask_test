@@ -1,10 +1,11 @@
-from flask import Flask, request, make_response, render_template, redirect, url_for, send_from_directory, jsonify
+from flask import Flask, request, make_response, render_template, redirect, url_for, send_from_directory, jsonify, session
 import fitz
 import pandas as pd
 import os
 import uuid
 
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path="/")
+app.secret_key = 'super secret key'
 
 @app.route('/')
 def index():
@@ -12,6 +13,32 @@ def index():
     myresult = 10+20
     mylist = [12,33,65,76]
     return render_template('index.html', value=myvalue, result=myresult, list=mylist)
+
+@app.route('/set_data')
+def set_data():
+    session['name'] = 'Sutapa'
+    session['msg'] = 'Its me'
+    return render_template('session.html', msg = 'session data set')
+
+@app.route('/session')
+def session_page():
+    return render_template('session.html', msg = 'session')
+
+@app.route('/get_data')
+def get_data():
+    if 'name' in session.keys() and 'msg' in session.keys():
+        name = session['name']
+        msg = session['msg']
+        return render_template('session.html', msg = f'Name: {name}, Message: {msg}')
+    else:
+        return render_template('session.html', msg = 'session data not set')
+
+@app.route('/clear_session')
+def clear_session():
+    session.clear()
+    #session.pop('msg') #for clearing some specific session keys
+    return render_template('session.html', msg = 'session clear')
+
 
 @app.route('/form', methods=['GET', 'POST'])
 def form():
