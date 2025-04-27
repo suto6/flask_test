@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response, render_template, redirect, url_for, send_from_directory, jsonify, session
+from flask import Flask, request, make_response, render_template, redirect, url_for, send_from_directory, jsonify, session, flash
 import fitz
 import pandas as pd
 import os
@@ -39,6 +39,37 @@ def clear_session():
     #session.pop('msg') #for clearing some specific session keys
     return render_template('session.html', msg = 'session clear')
 
+@app.route('/set_cookie')
+def set_cookie():
+    resp = make_response(render_template('session.html', msg = 'cookie set'))
+    resp.set_cookie('cookie_name', 'cookie_value')
+    return resp
+
+@app.route('/get_cookie')
+def get_cookie():
+    cookie_value = request.cookies.get('cookie_name')
+    return render_template('session.html', msg = f'cookie value: {cookie_value}')
+
+@app.route('/remove_cookie')
+def remove_cookie():
+    resp = make_response(render_template('session.html', msg = 'cookie removed'))
+    resp.set_cookie('cookie_name', expires=0)
+    return resp
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == "sutapa" and password == "1234":
+            flash('Sucessfully Logged in!!')
+            return render_template('index.html', msg = '')
+        else:
+            flash('Login failed')
+            return render_template('index.html', msg = '')
 
 @app.route('/form', methods=['GET', 'POST'])
 def form():

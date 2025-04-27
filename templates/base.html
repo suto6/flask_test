@@ -34,7 +34,17 @@
         <a href="/about">About</a>
         <a href="/services">Services</a>
         <a href="/contact">Contact</a>
+        <a href="/login">Login</a>
     </nav>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="alert alert-primary" role="alert">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
     {% block content %}
     {% endblock %}

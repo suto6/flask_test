@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Session{% endblock %}
+{% block title %}Session & Cookies{% endblock %}
 {% block content %}
 <h1>Session & Cookies</h1>
 <p>{{ msg }}</p>
@@ -7,5 +7,8 @@
 <a href="{{ url_for('set_data') }}">Set Session data</a><br>
 <a href="{{ url_for('get_data') }}">Get Session data</a><br>
 <a href="{{ url_for('clear_session') }}">Clear Session data</a><br>
+<a href="{{ url_for('set_cookie') }}">Set Cookie</a>
+<a href="{{ url_for('get_cookie') }}">Get Cookie</a>
+<a href="{{ url_for('remove_cookie') }}">Remove Cookie</a>
 
 {% endblock %}
